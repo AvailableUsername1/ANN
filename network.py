@@ -4,9 +4,9 @@ class Network(object):
     def __init__(self, layers):
         """
         Initializing the weights and biases of the network. Parameter
-        "layers" is a list of numbrs whose length represents the number
+        "layers" is a list of numbers whose length represents the number
         of layers and the value of individual elements represent the
-        number of neurons. 
+        number of neurons in that layer. 
         """
         self.numlayers = len(layers)
         self.weights = [np.random.randn(j, k) for j, k in zip(layers[1:], layers[0:-1])]
@@ -35,9 +35,8 @@ class Network(object):
         """
         Calculating the gradients of weights and biases with respect to
         the cost in a batch. Returning weightders - list containing all
-        weight derivatives starting with the end - and biasders - list
-        containing all bias derivatices starting with the end. All of them
-        are divided by the number of examples in a batch
+        weight derivatives - and biasders - list containing all bias derivatices.
+        All of them are divided by the number of examples in a batch.
         """
         errors = []
         weightders = []
@@ -66,7 +65,9 @@ class Network(object):
         First we split the features and labels from the data (data
         comes in form of a tuple (features, labels)). Then we create
         a list of indices and shuffle them. Next we create a list of
-        minibatches with those shuffled indices. 
+        minibatches with those shuffled indices. After that we apply
+        forward and backward propagation to get the gradients and then
+        update the weights and biases accordingly.
         """
         features = data[0]
         labels = data[1]
@@ -109,7 +110,9 @@ class Network(object):
                 print(f"End of epoch {epoch}: {accuracy} / {valdata[0].shape[1]}")
     
     def predict(self, features):
-        "Given the features of examples predict the output"
+        """
+        Given the features of examples compute predctions.
+        """
 
         nrexamples = features.shape[1]
         zlist, alist = self.feedforward(features)
@@ -118,7 +121,10 @@ class Network(object):
         return maxindex
 
     def accuracy(self, data):
-        "Gives the accuracy of model given data"
+        """
+        Gives the accuracy of model given data in form of a
+        tuple (features, labels).
+        """
 
         features = data[0]
         labels = data[1]
@@ -131,18 +137,15 @@ class Network(object):
         return accuracy
             
 
-
-
-
-
-
-            
-
-
-
-
 def sigmoid(z):
+    """
+    A function that return the sigmoid of z.
+    """
     return 1 / (1 + np.exp(-z))
 
 def sigmoidprime(z):
+    """
+    A function that return the derivative of
+    sigmoid of z.
+    """
     return sigmoid(z) * (1 - sigmoid(z))
